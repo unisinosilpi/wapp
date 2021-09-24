@@ -27,18 +27,26 @@ class FirebaseAuth implements IAuth {
   }
 
   async signOut(): Promise<void> {
-    await this.fbAuth.signOut();
+    try {
+      await this.fbAuth.signOut();
+    } catch (err) {
+      throw new InternalServerError();
+    }
   }
 
   async onAuthStateChanged(callback: (data: User | undefined) => void): Promise<void> {
-    this.fbAuth.onAuthStateChanged(firebaseUser => {
-      if (!firebaseUser) {
-        callback(undefined);
-      } else {
-        const name = firebaseUser.displayName ? firebaseUser.displayName : firebaseUser.email;
-        callback({ name });
-      }
-    });
+    try {
+      this.fbAuth.onAuthStateChanged(firebaseUser => {
+        if (!firebaseUser) {
+          callback(undefined);
+        } else {
+          const name = firebaseUser.displayName ? firebaseUser.displayName : firebaseUser.email;
+          callback({ name });
+        }
+      });
+    } catch (err) {
+      throw new InternalServerError();
+    }
   }
 }
 
