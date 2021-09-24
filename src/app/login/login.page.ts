@@ -48,7 +48,7 @@ export class LoginPage implements OnInit {
       else { throw new UserDoesNotExist(); }
     } catch (err) {
       const error = err.message ? err.message : 'Ops, tivemos um erro interno... Por favor, tente novamente mais tarde.';
-      this.alert.create('Ops', error, 'Ok', () => {});
+      await this.alert.create('Ops', error, 'Ok', () => {});
     }
 
     await this.loader.dismiss();
