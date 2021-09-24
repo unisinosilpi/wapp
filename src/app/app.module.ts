@@ -9,6 +9,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { environment } from 'src/environments/environment';
 import { FirebaseAuth } from './services/firebase-auth';
 import { IAuth } from './services/auth';
+import { ILoader } from './utils/loader';
+import { IonicLoader } from './utils/ionic-loader';
+import { IonicAlert } from './utils/ionic-alert';
+import { IAlert } from './utils/alert';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,6 +27,8 @@ import { IAuth } from './services/auth';
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: IAuth, useClass: FirebaseAuth },
+    { provide: ILoader, useClass: IonicLoader },
+    { provide: IAlert, useClass: IonicAlert },
   ],
   bootstrap: [AppComponent],
 })
