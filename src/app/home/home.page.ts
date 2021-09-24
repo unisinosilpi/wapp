@@ -44,6 +44,10 @@ export class HomePage implements OnInit {
     await this.loader.dismiss();
   };
 
+  selectElder = (elderId: string) => {
+    this.router.navigate([`/vital-signs-form/${elderId}`]);
+  };
+
   async logoff() {
     await this.authProvider.signOut();
     this.router.navigate(['/login']);
