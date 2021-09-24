@@ -4,7 +4,9 @@ import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { UserDoesNotExist } from '../errors/user-does-not-exist';
 import { User } from '../models/user';
+import { VitalSigns } from '../models/vital-signs';
 import { IAuth } from '../services/auth';
+import { IEldersService } from '../services/elders-service';
 import { IAlert } from '../utils/alert';
 import { ILoader } from '../utils/loader';
 
