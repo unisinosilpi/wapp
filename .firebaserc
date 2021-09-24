@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "smartvitalsigns": {
+      "hosting": {
+        "app": [
+          "smartvitalsigns"
+        ]
+      }
+    }
+  }
+}

@@ -1,22 +1,31 @@
-import { Component } from '@angular/core';
-import { DataService, Message } from '../services/data.service';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { User } from '../models/user';
+import { IAuth } from '../services/auth';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
-  constructor(private data: DataService) {}
+export class HomePage implements OnInit {
 
-  refresh(ev) {
-    setTimeout(() => {
-      ev.detail.complete();
-    }, 3000);
+  constructor(
+    private readonly authProvider: IAuth,
+    private router: Router,
+  ) {}
+
+  authStateChangedCallback = (user: User | undefined) => {
+    if (!user) { this.router.navigate(['/login']); }
+  };
+
+  ngOnInit() {
+    this.authProvider.onAuthStateChanged(this.authStateChangedCallback);
   }
 
-  getMessages(): Message[] {
-    return this.data.getMessages();
+  async logoff() {
+    await this.authProvider.signOut();
+    this.router.navigate(['/login']);
   }
 
 }
