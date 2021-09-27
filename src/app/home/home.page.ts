@@ -1,22 +1,56 @@
-import { Component } from '@angular/core';
-import { DataService, Message } from '../services/data.service';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Elder } from '../models/elder';
+import { User } from '../models/user';
+import { IAuth } from '../services/auth';
+import { IEldersService } from '../services/elders-service';
+import { IAlert } from '../utils/alert';
+import { ILoader } from '../utils/loader';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
-  constructor(private data: DataService) {}
+export class HomePage implements OnInit {
+  elders: Elder[] = [];
 
-  refresh(ev) {
-    setTimeout(() => {
-      ev.detail.complete();
-    }, 3000);
+  constructor(
+    private readonly authProvider: IAuth,
+    private readonly eldersService: IEldersService,
+    private readonly loader: ILoader,
+    private readonly alert: IAlert,
+    private router: Router,
+  ) {}
+
+  authStateChangedCallback = (user: User | undefined) => {
+    if (!user) { this.router.navigate(['/login']); }
+    else { this.getElders().then(); }
+  };
+
+  async ngOnInit() {
+    this.authProvider.onAuthStateChanged(this.authStateChangedCallback);
   }
 
-  getMessages(): Message[] {
-    return this.data.getMessages();
+  getElders = async () => {
+    try {
+      await this.loader.create('Buscando institucionalizados...');
+      this.elders = await this.eldersService.getElders();
+    } catch (err) {
+      const error = err.message ? err.message : 'Ops, tivemos um erro interno... Por favor, tente novamente mais tarde.';
+      await this.alert.create('Ops', error, 'Ok', () => {});
+    } finally {
+      await this.loader.dismiss();
+    }
+  };
+
+  selectElder = (elderId: string) => {
+    this.router.navigate([`/vital-signs-form/${elderId}`]);
+  };
+
+  async logoff() {
+    await this.authProvider.signOut();
+    this.router.navigate(['/login']);
   }
 
 }

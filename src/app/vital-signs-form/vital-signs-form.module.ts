@@ -1,19 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ViewMessagePage } from './view-message.page';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ViewMessagePageRoutingModule } from './view-message-routing.module';
+import { VitalSignsFormPageRoutingModule } from './vital-signs-form-routing.module';
+
+import { VitalSignsFormPage } from './vital-signs-form.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ViewMessagePageRoutingModule
+    VitalSignsFormPageRoutingModule
   ],
-  declarations: [ViewMessagePage]
+  declarations: [VitalSignsFormPage]
 })
-export class ViewMessagePageModule {}
+export class VitalSignsFormPageModule {}
