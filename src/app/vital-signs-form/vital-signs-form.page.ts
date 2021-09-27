@@ -36,7 +36,6 @@ export class VitalSignsFormPage implements OnInit {
   async ngOnInit() {
     this.authProvider.onAuthStateChanged(this.authStateChangedCallback);
     this.elderId = this.activatedRoute.snapshot.paramMap.get('elder');
-    console.log('this.elderId: ', this.elderId);
   }
 
   authStateChangedCallback = (user: User | undefined) => {
@@ -63,15 +62,9 @@ export class VitalSignsFormPage implements OnInit {
       this.alert.create('Sucesso', 'Sinais vitais salvos com sucesso!', 'ok', () => {
         this.router.navigate(['/home']);
       });
-    } catch (error) {
-      this.alert.create(
-        'Atenção',
-        'Erro ao salvar sinais vitais, verifique os dados e tente novamente mais tarde!',
-        'ok',
-        () => {
-          console.log(error);
-        }
-      );
+    } catch (err) {
+      const error = err.message ? err.message : 'Ops, tivemos um erro interno... Por favor, tente novamente mais tarde.';
+      await this.alert.create('Ops', error, 'Ok', () => {});
     } finally {
       await this.loader.dismiss();
     }

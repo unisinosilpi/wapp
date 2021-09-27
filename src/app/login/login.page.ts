@@ -49,9 +49,9 @@ export class LoginPage implements OnInit {
     } catch (err) {
       const error = err.message ? err.message : 'Ops, tivemos um erro interno... Por favor, tente novamente mais tarde.';
       await this.alert.create('Ops', error, 'Ok', () => {});
+    } finally {
+      await this.loader.dismiss();
     }
-
-    await this.loader.dismiss();
   }
 
 }
