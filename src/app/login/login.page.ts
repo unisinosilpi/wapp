@@ -44,13 +44,13 @@ export class LoginPage implements OnInit {
       await this.loader.create('Validando credenciais...');
       const { email, password } = this.login.value;
       const user = await this.authProvider.signInWithEmailAndPassword(email, password);
+      await this.loader.dismiss();
       if (user) { this.router.navigate(['/home']); }
       else { throw new UserDoesNotExist(); }
     } catch (err) {
+      await this.loader.dismiss();
       const error = err.message ? err.message : 'Ops, tivemos um erro interno... Por favor, tente novamente mais tarde.';
       await this.alert.create('Ops', error, 'Ok', () => {});
-    } finally {
-      await this.loader.dismiss();
     }
   }
 

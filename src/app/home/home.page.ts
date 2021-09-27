@@ -36,11 +36,11 @@ export class HomePage implements OnInit {
     try {
       await this.loader.create('Buscando institucionalizados...');
       this.elders = await this.eldersService.getElders();
+      await this.loader.dismiss();
     } catch (err) {
+      await this.loader.dismiss();
       const error = err.message ? err.message : 'Ops, tivemos um erro interno... Por favor, tente novamente mais tarde.';
       await this.alert.create('Ops', error, 'Ok', () => {});
-    } finally {
-      await this.loader.dismiss();
     }
   };
 

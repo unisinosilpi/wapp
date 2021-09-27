@@ -13,6 +13,7 @@ class IonicLoader implements ILoader {
   ) {}
 
   async create(message: string): Promise<void> {
+    if (this.pageLoader) { await this.pageLoader.dismiss(); }
     this.pageLoader = await this.loadingController.create({ message });
     await this.pageLoader.present();
   }
