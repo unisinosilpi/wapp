@@ -15,8 +15,11 @@ class FirebaseAuth implements IAuth {
   async signInWithEmailAndPassword(email: string, password: string): Promise<User> {
     try {
       const userCredential = await this.fbAuth.signInWithEmailAndPassword(email, password);
-      const name = userCredential.user.displayName ? userCredential.user.displayName : userCredential.user.email;
-      return { name };
+      const id = userCredential.user.uid;
+      const name = userCredential.user.displayName
+        ? userCredential.user.displayName
+        : userCredential.user.email;
+      return { id, name };
     } catch (err) {
       // eslint-disable-next-line curly
       if (err.code === 'auth/invalid-email') throw new EmailIsNotValid();
@@ -36,12 +39,13 @@ class FirebaseAuth implements IAuth {
 
   async onAuthStateChanged(callback: (data: User | undefined) => void): Promise<void> {
     try {
-      this.fbAuth.onAuthStateChanged(firebaseUser => {
+      this.fbAuth.onAuthStateChanged((firebaseUser) => {
         if (!firebaseUser) {
           callback(undefined);
         } else {
+          const id = firebaseUser.uid;
           const name = firebaseUser.displayName ? firebaseUser.displayName : firebaseUser.email;
-          callback({ name });
+          callback({ id, name });
         }
       });
     } catch (err) {
